@@ -1,3 +1,10 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": 1,
+      "username": "moi",
+      "password_hash": "$2a$10$jfv2JSmsvlpEinHcQNQjReU9JaCBGgM/kBiKdiRF6AKmg7JMJl5tG",
+      "created_at": "2026-04-26T16:10:59"
+    }
+  ]
 }

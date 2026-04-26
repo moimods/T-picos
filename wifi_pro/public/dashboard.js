@@ -1,6 +1,3 @@
-const authSection = document.getElementById('authSection');
-const dashboardSection = document.getElementById('dashboardSection');
-const sessionInfo = document.getElementById('sessionInfo');
 const usernameLabel = document.getElementById('usernameLabel');
 const statusMessage = document.getElementById('statusMessage');
 
@@ -22,7 +19,6 @@ const sumMedium = document.getElementById('sumMedium');
 const sumHigh = document.getElementById('sumHigh');
 
 let selectedNetworkId = null;
-let networksCache = [];
 
 function setStatus(message, isError = false) {
   statusMessage.textContent = message;
@@ -34,16 +30,24 @@ async function api(path, options = {}) {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
+
   const payload = await response.json();
   if (!response.ok || payload.ok === false) {
-    throw new Error(payload.message || 'Error en la operación.');
+    const message = payload.message || 'Error en la operación.';
+    if (response.status === 401) {
+      window.location.href = 'login.html';
+      throw new Error('No autenticado. Redirigiendo...');
+    }
+    throw new Error(message);
   }
+
   return payload;
 }
 
 function renderResult(result) {
   riskLevel.textContent = `${result.indicator} ${result.level}`;
   riskLevel.classList.remove('safe', 'medium', 'high');
+
   if (result.level === 'SEGURO') {
     riskLevel.classList.add('safe');
   } else if (result.level === 'RIESGO MEDIO') {
@@ -51,6 +55,7 @@ function renderResult(result) {
   } else {
     riskLevel.classList.add('high');
   }
+
   riskLevel.style.color = result.color;
   riskScore.textContent = `${result.score} / 100`;
   riskFill.style.width = `${result.score}%`;
@@ -77,7 +82,6 @@ async function loadConfig() {
 
 async function loadNetworks() {
   const { data } = await api('/api/networks');
-  networksCache = data;
   tableBody.innerHTML = '';
 
   data.forEach((network) => {
@@ -117,6 +121,7 @@ async function loadSummary() {
 
 async function loadHistory() {
   historyList.innerHTML = '';
+
   if (!selectedNetworkId) {
     const li = document.createElement('li');
     li.textContent = 'Sin selección de red.';
@@ -141,56 +146,6 @@ async function loadHistory() {
 
 async function refreshDashboard() {
   await Promise.all([loadNetworks(), loadSummary(), loadHistory()]);
-}
-
-function bindAuth() {
-  document.getElementById('btnRegister').addEventListener('click', async () => {
-    try {
-      const username = document.getElementById('registerUsername').value;
-      const password = document.getElementById('registerPassword').value;
-      const confirmPassword = document.getElementById('registerConfirm').value;
-      const result = await api('/api/register', {
-        method: 'POST',
-        body: JSON.stringify({ username, password, confirmPassword }),
-      });
-      setStatus(result.message);
-    } catch (error) {
-      setStatus(error.message, true);
-    }
-  });
-
-  document.getElementById('btnLogin').addEventListener('click', async () => {
-    try {
-      const username = document.getElementById('loginUsername').value;
-      const password = document.getElementById('loginPassword').value;
-      const result = await api('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-      });
-
-      usernameLabel.textContent = `Usuario: ${result.user.username}`;
-      authSection.classList.add('hidden');
-      dashboardSection.classList.remove('hidden');
-      sessionInfo.classList.remove('hidden');
-      setStatus(result.message);
-      await refreshDashboard();
-    } catch (error) {
-      setStatus(error.message, true);
-    }
-  });
-
-  document.getElementById('btnLogout').addEventListener('click', async () => {
-    try {
-      await api('/api/logout', { method: 'POST' });
-      authSection.classList.remove('hidden');
-      dashboardSection.classList.add('hidden');
-      sessionInfo.classList.add('hidden');
-      clearForm();
-      setStatus('Sesión cerrada.');
-    } catch (error) {
-      setStatus(error.message, true);
-    }
-  });
 }
 
 function bindDashboard() {
@@ -284,21 +239,35 @@ function bindDashboard() {
     clearForm();
     setStatus('Formulario limpio.');
   });
+
+  document.getElementById('btnLogout').addEventListener('click', async () => {
+    try {
+      await api('/api/logout', { method: 'POST' });
+      setStatus('Sesión cerrada.');
+      window.location.href = 'login.html';
+    } catch (error) {
+      setStatus(error.message, true);
+    }
+  });
 }
 
 async function bootstrap() {
   try {
-    await loadConfig();
-    bindAuth();
-    bindDashboard();
-
     const me = await api('/api/me');
-    if (me.authenticated) {
-      usernameLabel.textContent = `Usuario: ${me.user.username}`;
-      authSection.classList.add('hidden');
-      dashboardSection.classList.remove('hidden');
-      sessionInfo.classList.remove('hidden');
-      await refreshDashboard();
+    if (!me.authenticated) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    usernameLabel.textContent = `Usuario: ${me.user.username}`;
+    bindDashboard();
+    await loadConfig();
+    await refreshDashboard();
+
+    const flash = localStorage.getItem('wifiProFlash');
+    if (flash) {
+      setStatus(flash);
+      localStorage.removeItem('wifiProFlash');
     }
   } catch (error) {
     setStatus(error.message, true);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WiFi Pro - Iniciar sesión</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="header-inner container">
+      <h1>WiFi Pro</h1>
+      <nav class="session-info" aria-label="Navegación de autenticación">
+        <a class="btn small" href="register.html">Ir a registro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main auth-page" role="main">
+    <section class="login-fullscreen" aria-label="Iniciar sesión">
+      <div class="login-box">
+        <div class="avatar" aria-hidden="true"></div>
+
+        <form id="loginForm" autocomplete="username" onsubmit="return false;">
+          <div class="input-box">
+            <span class="icon" aria-hidden="true">👤</span>
+            <label for="loginUsername" class="sr-only">Usuario</label>
+            <input id="loginUsername" name="username" type="text" placeholder="Username" required minlength="3" />
+          </div>
+
+          <div class="input-box">
+            <span class="icon" aria-hidden="true">🔒</span>
+            <label for="loginPassword" class="sr-only">Contraseña</label>
+            <input id="loginPassword" name="password" type="password" placeholder="Password" required minlength="6" />
+          </div>
+
+          <div class="options">
+            <label>
+              <input id="rememberMe" type="checkbox"> Remember me
+            </label>
+            <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+          </div>
+
+          <button id="btnLogin" class="login-btn" type="submit">LOGIN</button>
+        </form>
+      </div>
+    </section>
+
+    <p id="statusMessage" class="status auth-status" aria-live="polite">Listo.</p>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>

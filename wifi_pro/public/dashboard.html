@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WiFi Pro - Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="header-inner container">
+      <h1>WiFi Pro</h1>
+      <div id="sessionInfo" class="session-info" aria-live="polite">
+        <span id="usernameLabel"></span>
+        <button id="btnLogout" class="btn small" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main" role="main">
+    <section id="dashboardSection" class="dashboard" aria-label="Panel de control" role="region">
+      <div class="container">
+        <div class="card form-card">
+          <h2>Gestión de Red WiFi</h2>
+
+          <div class="field">
+            <label for="networkName" class="sr-only">Nombre de red</label>
+            <input id="networkName" type="text" placeholder="Nombre de red" />
+          </div>
+
+          <div class="field">
+            <select id="networkType" aria-label="Tipo de red"></select>
+          </div>
+
+          <div class="field">
+            <select id="networkEncryption" aria-label="Tipo de cifrado"></select>
+          </div>
+
+          <div class="field">
+            <label for="networkPassword" class="sr-only">Contraseña</label>
+            <input id="networkPassword" type="password" placeholder="Contraseña (opcional)" />
+          </div>
+
+          <button id="btnAnalyzeSelected" class="btn full" type="button">Analizar</button>
+
+          <div class="actions" aria-label="Acciones de red">
+            <button id="btnAdd" class="btn success" type="button">Agregar</button>
+            <button id="btnUpdate" class="btn secondary" type="button">Editar</button>
+            <button id="btnDelete" class="btn danger" type="button">Eliminar</button>
+            <button id="btnClear" class="btn secondary" type="button">Limpiar</button>
+          </div>
+        </div>
+
+        <div class="card result-card" aria-live="polite">
+          <h2>Resultado de Seguridad</h2>
+
+          <div id="riskLevel" class="risk safe" aria-label="Nivel de riesgo">SEGURO</div>
+          <div id="riskScore" class="score" aria-label="Puntuación de riesgo">0 / 100</div>
+
+          <div class="progress" aria-label="Progreso de riesgo">
+            <div id="riskFill" class="progress-bar" style="width:0%"></div>
+          </div>
+
+          <div id="riskPercent" class="percent" aria-label="Riesgo en porcentaje">0%</div>
+
+          <button id="btnAnalyzeAll" class="btn secondary full" type="button">
+            Analizar todas las redes
+          </button>
+        </div>
+      </div>
+
+      <div class="card table-card" aria-label="Redes registradas">
+        <h2>Redes registradas</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Cifrado</th>
+              <th>Riesgo</th>
+            </tr>
+          </thead>
+          <tbody id="networksTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card summary-card" aria-label="Resumen general">
+        <h2>Resumen general</h2>
+
+        <div class="summary-grid">
+          <div>Total <strong id="sumTotal">0</strong></div>
+          <div class="safe">Seguras <strong id="sumSafe">0</strong></div>
+          <div class="medium">Medio <strong id="sumMedium">0</strong></div>
+          <div class="high">Alto <strong id="sumHigh">0</strong></div>
+        </div>
+      </div>
+
+      <div class="card history-card" aria-label="Historial de análisis">
+        <h2>Historial de análisis</h2>
+        <ul id="historyList"></ul>
+      </div>
+    </section>
+
+    <p id="statusMessage" class="status" aria-live="polite">Listo.</p>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

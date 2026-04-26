@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WiFi Pro - Registro</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="header-inner container">
+      <h1>WiFi Pro</h1>
+      <nav class="session-info" aria-label="Navegación de autenticación">
+        <a class="btn small" href="login.html">Ir a inicio de sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main auth-page" role="main">
+    <section class="login-fullscreen auth-split" aria-label="Registro de usuario">
+      <div class="login-box info-box" aria-hidden="true">
+        <div class="avatar"></div>
+        <h2>Bienvenido a WiFi Pro</h2>
+        <p>Crea tu cuenta para gestionar redes, analizar riesgos y revisar historial de seguridad.</p>
+      </div>
+
+      <article class="card auth-card register-card" aria-label="Formulario de registro">
+        <h2>Registro</h2>
+
+        <form id="registerForm" autocomplete="new-password" onsubmit="return false;">
+          <div class="field">
+            <label for="registerUsername" class="sr-only">Usuario</label>
+            <input id="registerUsername" name="username" type="text" placeholder="Usuario (mínimo 3 caracteres)" required minlength="3" />
+          </div>
+
+          <div class="field">
+            <label for="registerPassword" class="sr-only">Contraseña</label>
+            <input id="registerPassword" name="password" type="password" placeholder="Contraseña (mínimo 6 caracteres)" required minlength="6" />
+          </div>
+
+          <div class="field">
+            <label for="registerConfirm" class="sr-only">Confirmar contraseña</label>
+            <input id="registerConfirm" name="confirm" type="password" placeholder="Confirmar contraseña" required minlength="6" />
+          </div>
+
+          <button id="btnRegister" class="btn full" type="submit">Registrarse</button>
+        </form>
+      </article>
+    </section>
+
+    <p id="statusMessage" class="status auth-status" aria-live="polite">Listo.</p>
+  </main>
+
+  <script src="register.js"></script>
+</body>
+</html>
