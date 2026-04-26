@@ -4,31 +4,21 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "== WiFi Pro: inicio automatico con Bash =="
+echo "== WiFi Pro Node.js: inicio automatico con Bash =="
 
-# 1) Detectar comando de Python
-if command -v python >/dev/null 2>&1; then
-  PYTHON_CMD="python"
-elif command -v py >/dev/null 2>&1; then
-  PYTHON_CMD="py"
-else
-  echo "No se encontro Python en PATH. Instala Python y vuelve a intentar."
+# 1) Detectar Node.js y npm
+if ! command -v node >/dev/null 2>&1; then
+  echo "No se encontro Node.js en PATH. Instala Node.js (LTS) y vuelve a intentar."
   exit 1
 fi
 
-# 2) Crear entorno virtual si no existe
-if [[ ! -f ".venv/Scripts/activate" ]]; then
-  echo "Creando entorno virtual..."
-  "$PYTHON_CMD" -m venv .venv
+if ! command -v npm >/dev/null 2>&1; then
+  echo "No se encontro npm en PATH. Reinstala Node.js y vuelve a intentar."
+  exit 1
 fi
 
-# 3) Activar entorno virtual (Git Bash en Windows)
-# shellcheck disable=SC1091
-source ".venv/Scripts/activate"
+echo "Instalando dependencias de Node.js..."
+npm install
 
-# 4) Instalar dependencias
-"$PYTHON_CMD" -m pip install --upgrade pip
-"$PYTHON_CMD" -m pip install -r requirements.txt
-
-# 5) Iniciar app
-"$PYTHON_CMD" ./main.py
+# 2) Iniciar app
+npm start

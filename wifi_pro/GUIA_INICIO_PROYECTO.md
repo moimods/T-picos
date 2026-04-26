@@ -1,87 +1,224 @@
-# Guia de inicio del proyecto
+# Guía de inicio del proyecto WiFi Pro
 
-Esta guia resume los pasos minimos para iniciar `wifi_pro`.
+Este documento explica cómo iniciar la aplicación WiFi Pro en su versión actual con Node.js.
 
-## Requisitos previos
+---
 
-- Python 3.10+ instalado
-- No se requiere base de datos externa (todo es local)
+## 1. Requisitos
 
-Nota de compatibilidad:
+Antes de iniciar, asegúrate de tener instalado:
 
-- Si usas Python muy nuevo (por ejemplo 3.14), asegúrate de tener pip actualizado para instalar `bcrypt` sin problemas.
+- Node.js LTS
+- npm
 
-## 1) Ir a la carpeta del proyecto
-
-En PowerShell:
+Puedes verificarlo con:
 
 ```powershell
-cd C:\Users\moise\OneDrive\Desktop\Topicos_programacion\wifi_pro
+node --version
+npm --version
 ```
 
-En Git Bash:
+---
 
-```bash
-cd /c/Users/moise/OneDrive/Desktop/Topicos_programacion/wifi_pro
+## 2. Estructura del proyecto
+
+La aplicación se ejecuta desde la carpeta raíz del proyecto:
+
+- `package.json` contiene el servidor Node.js
+- `src/server.js` inicia la aplicación
+- `public/` contiene la interfaz web
+- `data/` guarda usuarios, redes e historial en JSON
+
+---
+
+## 3. Instalación de dependencias
+
+Abre una terminal en la carpeta del proyecto y ejecuta:
+
+```powershell
+npm install
 ```
 
-## 2) Configurar variables de entorno
+Esto instalará:
 
-No necesitas variables `DB_*`. El proyecto usa almacenamiento local en JSON dentro de `data/`.
+- `express`
+- `express-session`
+- `bcryptjs`
 
-## 3) Inicio recomendado (automatico)
+---
 
-### Windows PowerShell
+## 4. Formas de iniciar el proyecto
+
+### Opción recomendada en Windows
+
+Ejecuta el script de PowerShell:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\iniciar_proyecto.ps1
 ```
 
-### Git Bash
+Este script:
+
+1. Verifica que Node.js y npm estén instalados
+2. Instala las dependencias
+3. Arranca la aplicación
+
+### Opción en Bash o Git Bash
 
 ```bash
 bash ./iniciar_proyecto.sh
 ```
 
-Estos scripts hacen automaticamente:
+Este script hace lo mismo en entornos Bash.
 
-- crear `.venv` si no existe
-- instalar dependencias de `requirements.txt`
-- ejecutar `main.py`
+### Opción manual
 
-## 4) Inicio manual (opcional)
-
-En PowerShell:
+Si prefieres hacerlo paso a paso:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python .\main.py
+npm install
+npm start
 ```
 
-Si PowerShell bloquea la activacion por ExecutionPolicy, usa esta alternativa:
+---
+
+## 5. Abrir la aplicación
+
+Una vez iniciado el servidor, abre en el navegador:
+
+```text
+http://localhost:3000
+```
+
+Ahí verás:
+
+- Pantalla de inicio de sesión
+- Registro de usuario
+- Dashboard de redes WiFi
+- Análisis de riesgo
+- Historial y resumen
+
+---
+
+## 6. Primer uso
+
+### Registro
+
+Si es tu primera vez:
+
+1. Escribe un usuario
+2. Escribe una contraseña
+3. Confirma la contraseña
+4. Presiona `Registrarse`
+
+### Inicio de sesión
+
+1. Ingresa usuario y contraseña
+2. Presiona `Ingresar`
+3. Accede al dashboard
+
+---
+
+## 7. Uso básico del dashboard
+
+### Agregar una red
+
+1. Escribe el nombre de la red
+2. Elige el tipo: `Pública` o `Privada`
+3. Selecciona el cifrado
+4. Agrega la contraseña si aplica
+5. Presiona `Agregar`
+
+### Analizar una red
+
+1. Selecciona una red de la tabla
+2. Presiona `Analizar`
+3. Revisa el resultado, puntaje y barra de progreso
+
+### Analizar todas las redes
+
+1. Presiona `Analizar todo`
+2. El sistema evaluará todas las redes registradas
+3. Verás el resultado más riesgoso
+
+### Editar o eliminar
+
+1. Selecciona una red
+2. Modifica los datos si deseas editarla
+3. Presiona `Editar` o `Eliminar`
+
+---
+
+## 8. Datos guardados
+
+La información se guarda localmente en JSON dentro de `data/`:
+
+- `usuarios.json`
+- `redes.json`
+- `historial.json`
+
+Esto significa que:
+
+- no necesitas base de datos externa
+- no necesitas PostgreSQL
+- todo queda en tu máquina
+
+---
+
+## 9. Solución de problemas
+
+### No abre la aplicación
+
+Verifica que Node.js esté instalado correctamente:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe .\main.py
+node --version
+npm --version
 ```
 
-## 5) Credenciales iniciales
+### Error al instalar dependencias
 
-No hay credenciales predefinidas. En la pantalla inicial usa el botón de registro y crea tu usuario.
-
-## 6) Verificacion rapida
+Vuelve a ejecutar:
 
 ```powershell
-python --version
-Test-Path .\requirements.txt
-Test-Path .\data\usuarios.json
-Test-Path .\data\redes.json
-Test-Path .\data\historial.json
+npm install
 ```
 
-Si algo falla, revisa `README.md` y `ARQUITECTURA.md`.
+### El puerto 3000 está ocupado
+
+Cierra la aplicación que use ese puerto o cambia el valor de `PORT` antes de iniciar.
+
+### Los datos no aparecen
+
+Revisa la carpeta `data/` y confirma que los archivos JSON existan.
+
+---
+
+## 10. Resumen rápido
+
+```powershell
+npm install
+npm start
+```
+
+Luego abre:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 11. Resultado esperado
+
+Al iniciar correctamente, el proyecto debe mostrar:
+
+- Header azul con el título `WiFi Pro - Security Analyzer`
+- Formulario para agregar redes
+- Tarjeta de resultado con puntaje y barra
+- Tabla de redes
+- Resumen e historial
+
+---
+
+**WiFi Pro está listo para usarse.**

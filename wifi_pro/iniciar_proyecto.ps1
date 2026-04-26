@@ -3,39 +3,18 @@ $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $projectRoot
 
-$activateScript = Join-Path $projectRoot ".venv\Scripts\Activate.ps1"
-$requirementsFile = Join-Path $projectRoot "requirements.txt"
-$mainFile = Join-Path $projectRoot "main.py"
+Write-Host "== WiFi Pro Node.js: inicio automatico ==" -ForegroundColor Cyan
 
-Write-Host "== WiFi Pro: inicio automatico ==" -ForegroundColor Cyan
-
-# 1) Verificar Python
-if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-    if (Get-Command py -ErrorAction SilentlyContinue) {
-        $pythonCmd = "py"
-    }
-    else {
-        throw "No se encontro Python en PATH. Instala Python y vuelve a intentar."
-    }
-}
-else {
-    $pythonCmd = "python"
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+    throw "No se encontro Node.js en PATH. Instala Node.js (LTS) y vuelve a intentar."
 }
 
-# 2) Crear entorno virtual si no existe
-if (-not (Test-Path $activateScript)) {
-    Write-Host "Creando entorno virtual..." -ForegroundColor Yellow
-    & $pythonCmd -m venv .venv
+if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
+    throw "No se encontro npm en PATH. Reinstala Node.js y vuelve a intentar."
 }
 
-# 3) Activar entorno virtual
-. $activateScript
+Write-Host "Instalando dependencias de Node.js..." -ForegroundColor Yellow
+npm install
 
-# 4) Instalar dependencias
-Write-Host "Instalando/actualizando dependencias..." -ForegroundColor Yellow
-& $pythonCmd -m pip install --upgrade pip
-& $pythonCmd -m pip install -r $requirementsFile
-
-# 5) Ejecutar aplicacion
-Write-Host "Iniciando aplicacion..." -ForegroundColor Green
-& $pythonCmd $mainFile
+Write-Host "Iniciando aplicacion Node.js..." -ForegroundColor Green
+npm start

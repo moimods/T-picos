@@ -1,0 +1,15 @@
+{
+  "name": "wifi-pro-node",
+  "version": "1.0.0",
+  "description": "WiFi Pro Security Analyzer en Node.js",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  }
+}
