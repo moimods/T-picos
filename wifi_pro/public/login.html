@@ -17,32 +17,34 @@
   </header>
 
   <main class="app-main auth-page" role="main">
-    <section class="login-fullscreen" aria-label="Iniciar sesión">
-      <div class="login-box">
-        <div class="avatar" aria-hidden="true"></div>
+    <section class="login-layout" aria-label="Iniciar sesión">
+      <!-- LADO IZQUIERDO -->
+      <div class="login-left">
+        <div class="overlay">
+          <h1>WiFi Pro</h1>
+          <p>
+            Gestiona redes, analiza riesgos y mejora la seguridad
+            de tus conexiones de forma inteligente.
+          </p>
+        </div>
+      </div>
 
-        <form id="loginForm" autocomplete="username" onsubmit="return false;">
-          <div class="input-box">
-            <span class="icon" aria-hidden="true">👤</span>
-            <label for="loginUsername" class="sr-only">Usuario</label>
-            <input id="loginUsername" name="username" type="text" placeholder="Username" required minlength="3" />
-          </div>
+      <!-- LADO DERECHO -->
+      <div class="login-right">
+        <div class="login-card">
+          <h2>Iniciar sesión</h2>
 
-          <div class="input-box">
-            <span class="icon" aria-hidden="true">🔒</span>
-            <label for="loginPassword" class="sr-only">Contraseña</label>
-            <input id="loginPassword" name="password" type="password" placeholder="Password" required minlength="6" />
-          </div>
+          <form id="loginForm" autocomplete="username" onsubmit="return false;">
+            <input id="loginUsername" name="username" type="text" placeholder="Usuario" required minlength="3" />
+            <input id="loginPassword" name="password" type="password" placeholder="Contraseña" required minlength="6" />
 
-          <div class="options">
-            <label>
-              <input id="rememberMe" type="checkbox"> Remember me
-            </label>
-            <a href="#" id="forgotPasswordLink">Forgot Password?</a>
-          </div>
+            <button id="btnLogin" class="btn full" type="submit">INICIAR SESIÓN</button>
 
-          <button id="btnLogin" class="login-btn" type="submit">LOGIN</button>
-        </form>
+            <p class="switch">
+              ¿No tienes cuenta? <a href="register.html">Regístrate</a>
+            </p>
+          </form>
+        </div>
       </div>
     </section>
 

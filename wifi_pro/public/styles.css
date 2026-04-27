@@ -148,136 +148,100 @@ input:focus, select:focus {
 .actions { margin-top: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 
 /* =========================
-   LOGIN FULLSCREEN
+   LOGIN LAYOUT (Dos columnas)
 ========================= */
-.login-fullscreen {
-  min-height: calc(100vh - 92px);
+.login-layout {
   display: grid;
-  grid-template-columns: minmax(320px, 420px) minmax(320px, 420px);
+  grid-template-columns: 1.2fr 1fr;
+  height: calc(100vh - 70px);
+}
+
+/* LADO IZQUIERDO */
+.login-left {
+  background: linear-gradient(135deg, #0f2027, #203a43, #ff7e5f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 40px;
+}
+
+.overlay {
+  max-width: 400px;
+}
+
+.overlay h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.overlay p {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* LADO DERECHO */
+.login-right {
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
-  padding: 28px;
-  border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    #0f2027,
-    #203a43,
-    #2c5364,
-    #ff7e5f
-  );
+  background: #f8fafc;
 }
 
-.login-box {
-  width: 100%;
-  text-align: center;
-  color: #fff;
+/* CARD */
+.login-card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(12px);
+  padding: 35px;
+  border-radius: 16px;
+  width: 320px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 }
 
-.info-box h2 {
-  margin: 0 0 6px;
-  color: #fff;
-}
-
-.info-box p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 25px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-}
-
-.input-box {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.2);
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.input-box input {
-  border: none;
-  background: transparent;
-  outline: none;
-  color: #fff;
-  flex: 1;
-  font-size: 14px;
-  padding: 4px 0;
-  box-shadow: none;
-}
-
-.input-box input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.input-box input:focus {
-  border: none;
-  box-shadow: none;
-  background: transparent;
-}
-
-.icon {
-  margin-right: 10px;
-}
-
-.options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
+.login-card h2 {
   margin-bottom: 20px;
-  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
 }
 
-.options label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.options a {
-  color: #ddd;
-  text-decoration: none;
-}
-
-.options a:hover {
-  text-decoration: underline;
-}
-
-.login-btn {
+/* INPUTS */
+.login-card input {
   width: 100%;
   padding: 12px;
-  border: none;
-  background: rgba(0, 0, 0, 0.4);
-  color: #fff;
-  font-weight: bold;
-  letter-spacing: 1px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: 0.3s;
-}
-
-.login-btn:hover {
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.auth-card {
-  width: 100%;
-}
-
-.register-card {
-  background: var(--surface);
-}
-
-.register-card h2 {
   margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+/* SWITCH */
+.switch {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text);
+  text-align: center;
+}
+
+.switch a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.switch a:hover {
+  opacity: 0.8;
 }
 
 /* =========================
@@ -348,9 +312,9 @@ tbody tr.selected { background: #dbeafe; }
   .actions { grid-template-columns: repeat(2, 1fr); }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }
 
-  .login-fullscreen {
+  .login-layout {
     grid-template-columns: 1fr;
-    min-height: auto;
+    height: auto;
   }
 
   .auth-status {
@@ -360,8 +324,34 @@ tbody tr.selected { background: #dbeafe; }
 @media (max-width: 640px) {
   .app-header { padding: 12px 16px; }
 
-  .login-fullscreen {
+  .login-layout {
     padding: 18px;
     border-radius: 14px;
+  }
+
+  .login-left {
+    padding: 30px 20px;
+    min-height: 250px;
+  }
+
+  .overlay {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .overlay h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .overlay p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 25px;
   }
 }
