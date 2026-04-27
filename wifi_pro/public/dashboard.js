@@ -12,6 +12,7 @@ const riskLevel = document.getElementById('riskLevel');
 const riskScore = document.getElementById('riskScore');
 const riskFill = document.getElementById('riskFill');
 const riskPercent = document.getElementById('riskPercent');
+const riskRecommendations = document.getElementById('riskRecommendations');
 
 const sumTotal = document.getElementById('sumTotal');
 const sumSafe = document.getElementById('sumSafe');
@@ -44,23 +45,37 @@ async function api(path, options = {}) {
   return payload;
 }
 
-function renderResult(result) {
-  riskLevel.textContent = `${result.indicator} ${result.level}`;
+function updateUI(resultado) {
+  const nivel = resultado.nivel || resultado.level || 'SEGURO';
+  const score = Number(resultado.score || 0);
+  const color = resultado.color || '#16a34a';
+  const indicator = resultado.indicator || '🟢';
+  const recomendaciones = Array.isArray(resultado.recomendaciones) ? resultado.recomendaciones : [];
+
+  riskLevel.textContent = `${indicator} ${nivel}`;
   riskLevel.classList.remove('safe', 'medium', 'high');
 
-  if (result.level === 'SEGURO') {
+  if (nivel === 'SEGURO') {
     riskLevel.classList.add('safe');
-  } else if (result.level === 'RIESGO MEDIO') {
+  } else if (nivel === 'MEDIO') {
     riskLevel.classList.add('medium');
   } else {
     riskLevel.classList.add('high');
   }
 
-  riskLevel.style.color = result.color;
-  riskScore.textContent = `${result.score} / 100`;
-  riskFill.style.width = `${result.score}%`;
-  riskFill.style.background = result.color;
-  riskPercent.textContent = `${result.score}%`;
+  riskLevel.style.color = color;
+  riskScore.textContent = `${score} / 100`;
+  riskFill.style.width = `${score}%`;
+  riskFill.style.background = color;
+  riskPercent.textContent = `${score}%`;
+
+  if (riskRecommendations) {
+    if (!recomendaciones.length) {
+      riskRecommendations.innerHTML = '<li>Sin recomendaciones por ahora.</li>';
+    } else {
+      riskRecommendations.innerHTML = recomendaciones.map((item) => `<li>${item}</li>`).join('');
+    }
+  }
 }
 
 function clearForm() {
@@ -215,7 +230,7 @@ function bindDashboard() {
 
     try {
       const result = await api(`/api/networks/${selectedNetworkId}/analyze`, { method: 'POST' });
-      renderResult(result.data);
+      updateUI(result.data);
       setStatus(result.message);
       await refreshDashboard();
     } catch (error) {
@@ -226,8 +241,13 @@ function bindDashboard() {
   document.getElementById('btnAnalyzeAll').addEventListener('click', async () => {
     try {
       const result = await api('/api/networks/analyze-all', { method: 'POST' });
+      if (!Array.isArray(result.data) || !result.data.length) {
+        setStatus('No hay resultados para mostrar.', true);
+        return;
+      }
+
       const highest = result.data.reduce((prev, current) => (current.score > prev.score ? current : prev), result.data[0]);
-      renderResult(highest);
+      updateUI(highest);
       setStatus(result.message);
       await refreshDashboard();
     } catch (error) {

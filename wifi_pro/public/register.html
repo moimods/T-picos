@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WiFi Pro - Registro</title>
+  <title>MovilWiFi - Registro</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="auth-screen">
   <header class="app-header" role="banner">
-    <div class="header-inner container">
-      <h1>WiFi Pro</h1>
+    <div class="header-inner">
+      <h1>MovilWiFi</h1>
       <nav class="session-info" aria-label="Navegación de autenticación">
         <a class="btn small" href="login.html">Ir a inicio de sesión</a>
       </nav>
@@ -17,38 +17,66 @@
   </header>
 
   <main class="app-main auth-page" role="main">
-    <section class="login-fullscreen auth-split" aria-label="Registro de usuario">
-      <div class="login-box info-box" aria-hidden="true">
-        <div class="avatar"></div>
-        <h2>Bienvenido a WiFi Pro</h2>
-        <p>Crea tu cuenta para gestionar redes, analizar riesgos y revisar historial de seguridad.</p>
-      </div>
-
-      <article class="card auth-card register-card" aria-label="Formulario de registro">
+    <section class="auth-shell" aria-label="Registro de usuario">
+      <article class="auth-card" aria-label="Formulario de registro">
         <h2>Registro</h2>
+        <p class="auth-subtitle">Crea tus credenciales para empezar en segundos.</p>
 
-        <form id="registerForm" autocomplete="new-password" onsubmit="return false;">
+        <form id="registerForm" onsubmit="return false;" novalidate>
           <div class="field">
             <label for="registerUsername" class="sr-only">Usuario</label>
-            <input id="registerUsername" name="username" type="text" placeholder="Usuario (mínimo 3 caracteres)" required minlength="3" />
+            <input
+              id="registerUsername"
+              name="username"
+              type="text"
+              placeholder="Usuario"
+              autocomplete="username"
+              required
+              minlength="3"
+            />
           </div>
 
           <div class="field">
             <label for="registerPassword" class="sr-only">Contraseña</label>
-            <input id="registerPassword" name="password" type="password" placeholder="Contraseña (mínimo 6 caracteres)" required minlength="6" />
+            <input
+              id="registerPassword"
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              autocomplete="new-password"
+              required
+              minlength="6"
+            />
           </div>
 
           <div class="field">
             <label for="registerConfirm" class="sr-only">Confirmar contraseña</label>
-            <input id="registerConfirm" name="confirm" type="password" placeholder="Confirmar contraseña" required minlength="6" />
+            <input
+              id="registerConfirm"
+              name="confirm"
+              type="password"
+              placeholder="Confirmar contraseña"
+              autocomplete="new-password"
+              required
+              minlength="6"
+            />
           </div>
 
           <button id="btnRegister" class="btn full" type="submit">Registrarse</button>
+
+          <div class="auth-actions single">
+            <a class="auth-link" href="login.html">Ya tengo cuenta</a>
+          </div>
         </form>
       </article>
+
+      <div class="auth-brand">
+        <h2>Welcome</h2>
+        <p>Configura tu cuenta en segundos y comienza a monitorear tus redes de forma inteligente.</p>
+      </div>
     </section>
 
-    <p id="statusMessage" class="status auth-status" aria-live="polite">Listo.</p>
+    <p id="statusMessage" class="auth-alert" aria-live="polite">Listo.</p>
   </main>
 
   <script src="register.js"></script>

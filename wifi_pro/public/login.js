@@ -4,10 +4,24 @@ const loginUsername = document.getElementById('loginUsername');
 const loginPassword = document.getElementById('loginPassword');
 const rememberMe = document.getElementById('rememberMe');
 const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const btnLogin = document.getElementById('btnLogin');
 
 function setStatus(message, isError = false) {
+  if (!statusMessage) {
+    return;
+  }
+
   statusMessage.textContent = message;
   statusMessage.classList.toggle('error', Boolean(isError));
+}
+
+function setLoginLoading(isLoading) {
+  if (!btnLogin) {
+    return;
+  }
+
+  btnLogin.disabled = Boolean(isLoading);
+  btnLogin.textContent = isLoading ? 'Cargando...' : 'Iniciar sesión';
 }
 
 async function api(path, options = {}) {
@@ -25,6 +39,8 @@ async function api(path, options = {}) {
 }
 
 async function handleLogin() {
+  setLoginLoading(true);
+
   try {
     const result = await api('/api/login', {
       method: 'POST',
@@ -34,9 +50,9 @@ async function handleLogin() {
       }),
     });
 
-    if (rememberMe.checked) {
+    if (rememberMe && rememberMe.checked) {
       localStorage.setItem('wifiProRememberedUsername', loginUsername.value);
-    } else {
+    } else if (rememberMe) {
       localStorage.removeItem('wifiProRememberedUsername');
     }
 
@@ -44,6 +60,8 @@ async function handleLogin() {
     window.location.href = 'dashboard.html';
   } catch (error) {
     setStatus(error.message, true);
+  } finally {
+    setLoginLoading(false);
   }
 }
 
@@ -55,22 +73,26 @@ async function bootstrap() {
   }
 
   const remembered = localStorage.getItem('wifiProRememberedUsername');
-  if (remembered) {
+  if (remembered && loginUsername) {
     loginUsername.value = remembered;
-    rememberMe.checked = true;
+    if (rememberMe) {
+      rememberMe.checked = true;
+    }
   }
 
-  loginForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    handleLogin();
-  });
+  if (loginForm) {
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      handleLogin();
+    });
+  }
 
-  document.getElementById('btnLogin').addEventListener('click', handleLogin);
-
-  forgotPasswordLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    setStatus('Función de recuperación en desarrollo. Contacta al administrador.', true);
-  });
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      setStatus('Función de recuperación en desarrollo. Contacta al administrador.', true);
+    });
+  }
 
   try {
     const me = await api('/api/me');

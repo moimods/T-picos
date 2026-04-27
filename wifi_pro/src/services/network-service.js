@@ -142,9 +142,9 @@ function analyzeOne(networkId, userId) {
     return { ok: false, message: 'Selecciona una red válida para analizar.', result: null };
   }
 
-  const result = analyzeNetwork(network.network_type, network.encryption, network.password || '');
-  saveAnalysis(networkId, userId, result.score, result.level, result.indicator);
-  addHistory(networkId, userId, result.score, result.level, result.indicator);
+  const result = analyzeNetwork(network.network_type, network.encryption, network.password || '', network.name || '');
+  saveAnalysis(networkId, userId, result.score, result.nivel, result.indicator);
+  addHistory(networkId, userId, result.score, result.nivel, result.indicator);
 
   return {
     ok: true,
@@ -153,9 +153,11 @@ function analyzeOne(networkId, userId) {
       network_id: Number(networkId),
       name: network.name,
       score: result.score,
-      level: result.level,
+      nivel: result.nivel,
+      level: result.nivel,
       color: result.color,
       indicator: result.indicator,
+      recomendaciones: result.recomendaciones,
     },
   };
 }
@@ -167,17 +169,19 @@ function analyzeAll(userId) {
   }
 
   const results = networks.map((network) => {
-    const result = analyzeNetwork(network.network_type, network.encryption, network.password || '');
-    saveAnalysis(network.id, userId, result.score, result.level, result.indicator);
-    addHistory(network.id, userId, result.score, result.level, result.indicator);
+    const result = analyzeNetwork(network.network_type, network.encryption, network.password || '', network.name || '');
+    saveAnalysis(network.id, userId, result.score, result.nivel, result.indicator);
+    addHistory(network.id, userId, result.score, result.nivel, result.indicator);
 
     return {
       network_id: network.id,
       name: network.name,
       score: result.score,
-      level: result.level,
+      nivel: result.nivel,
+      level: result.nivel,
       color: result.color,
       indicator: result.indicator,
+      recomendaciones: result.recomendaciones,
     };
   });
 
@@ -186,19 +190,24 @@ function analyzeAll(userId) {
 
 function buildSummary(userId) {
   const rows = listByUser(userId);
-  const summary = { SEGURO: 0, 'RIESGO MEDIO': 0, 'ALTO RIESGO': 0 };
+  const summary = { SEGURO: 0, MEDIO: 0, ALTO: 0 };
 
   rows.forEach((row) => {
-    if (summary[row.last_level] !== undefined) {
-      summary[row.last_level] += 1;
+    const level = String(row.last_level || '').toUpperCase();
+    if (level === 'SEGURO') {
+      summary.SEGURO += 1;
+    } else if (level === 'MEDIO' || level === 'RIESGO MEDIO') {
+      summary.MEDIO += 1;
+    } else if (level === 'ALTO' || level === 'ALTO RIESGO') {
+      summary.ALTO += 1;
     }
   });
 
   return {
     total: rows.length,
-    secure: summary['SEGURO'],
-    medium: summary['RIESGO MEDIO'],
-    high: summary['ALTO RIESGO'],
+    secure: summary.SEGURO,
+    medium: summary.MEDIO,
+    high: summary.ALTO,
   };
 }
 

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WiFi Pro - Dashboard</title>
+  <title>MovilWiFi - Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="app-header" role="banner">
     <div class="header-inner container">
-      <h1>WiFi Pro</h1>
+      <h1>MovilWiFi</h1>
       <div id="sessionInfo" class="session-info" aria-live="polite">
         <span id="usernameLabel"></span>
         <button id="btnLogout" class="btn small" type="button">Cerrar sesión</button>
@@ -62,6 +62,10 @@
           </div>
 
           <div id="riskPercent" class="percent" aria-label="Riesgo en porcentaje">0%</div>
+
+          <ul id="riskRecommendations" class="reco-list" aria-label="Recomendaciones de seguridad">
+            <li>Las recomendaciones apareceran despues del analisis.</li>
+          </ul>
 
           <button id="btnAnalyzeAll" class="btn secondary full" type="button">
             Analizar todas las redes

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WiFi Pro - Iniciar sesión</title>
+  <title>MovilWiFi - Iniciar sesión</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="auth-screen">
   <header class="app-header" role="banner">
-    <div class="header-inner container">
-      <h1>WiFi Pro</h1>
+    <div class="header-inner">
+      <h1>MovilWiFi</h1>
       <nav class="session-info" aria-label="Navegación de autenticación">
         <a class="btn small" href="register.html">Ir a registro</a>
       </nav>
@@ -17,38 +17,54 @@
   </header>
 
   <main class="app-main auth-page" role="main">
-    <section class="login-layout" aria-label="Iniciar sesión">
-      <!-- LADO IZQUIERDO -->
-      <div class="login-left">
-        <div class="overlay">
-          <h1>WiFi Pro</h1>
-          <p>
-            Gestiona redes, analiza riesgos y mejora la seguridad
-            de tus conexiones de forma inteligente.
-          </p>
-        </div>
-      </div>
+    <section class="auth-shell" aria-label="Iniciar sesión">
+      <article class="auth-card" aria-label="Formulario de inicio de sesión">
+        <h2>Iniciar sesión</h2>
+        <p class="auth-subtitle">Accede para analizar riesgo y administrar tu panel.</p>
 
-      <!-- LADO DERECHO -->
-      <div class="login-right">
-        <div class="login-card">
-          <h2>Iniciar sesión</h2>
+        <form id="loginForm" onsubmit="return false;" novalidate>
+          <div class="field">
+            <label for="loginUsername" class="sr-only">Usuario</label>
+            <input
+              id="loginUsername"
+              name="username"
+              type="text"
+              placeholder="Usuario"
+              autocomplete="username"
+              required
+              minlength="3"
+            />
+          </div>
 
-          <form id="loginForm" autocomplete="username" onsubmit="return false;">
-            <input id="loginUsername" name="username" type="text" placeholder="Usuario" required minlength="3" />
-            <input id="loginPassword" name="password" type="password" placeholder="Contraseña" required minlength="6" />
+          <div class="field">
+            <label for="loginPassword" class="sr-only">Contraseña</label>
+            <input
+              id="loginPassword"
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              autocomplete="current-password"
+              required
+              minlength="6"
+            />
+          </div>
 
-            <button id="btnLogin" class="btn full" type="submit">INICIAR SESIÓN</button>
+          <button id="btnLogin" class="btn full" type="submit">Iniciar sesión</button>
 
-            <p class="switch">
-              ¿No tienes cuenta? <a href="register.html">Regístrate</a>
-            </p>
-          </form>
-        </div>
+          <div class="auth-actions">
+            <a class="auth-link" href="register.html">Crear cuenta</a>
+            <a class="auth-link" href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+          </div>
+        </form>
+      </article>
+
+      <div class="auth-brand">
+        <h2>Welcome</h2>
+        <p>Gestiona tu red y fortalece la seguridad de tus conexiones en un solo lugar.</p>
       </div>
     </section>
 
-    <p id="statusMessage" class="status auth-status" aria-live="polite">Listo.</p>
+    <p id="statusMessage" class="auth-alert" aria-live="polite">Listo.</p>
   </main>
 
   <script src="login.js"></script>
